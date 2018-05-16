@@ -39,9 +39,11 @@ namespace ClickOnceRecovery
 
         public void RunProcess()
         {
-
-            RegistrationWrite.SetRegistrationElemnents();
-
+            if (!Directory.Exists(AppData.ClickOnceLocation))
+            {
+                RegistrationWrite.SetRegistrationElemnents();
+                AppData.ClickOnceLocation = setClickOnceFolderLocation();
+            }
             AppData.ClickOnceLocation = setClickOnceFolderLocation();
             
             string requiredFolder = Path.Combine(AppData.ClickOnceLocation, AppData.CurrentFolder);
@@ -56,7 +58,7 @@ namespace ClickOnceRecovery
             Status(ProcessElementENUM.Element, "Open Health Options", -1);
             DirectoryInfo info = new DirectoryInfo(AppData.RecoveryLocation);
 
-            RegistrationWrite.SetRegistrationElemnents();
+            
 
             var file = info.Parent.GetFiles().FirstOrDefault(x => x.Extension.Equals(".appref-ms"));
             if(file !=null)

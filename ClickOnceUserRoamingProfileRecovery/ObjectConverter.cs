@@ -22,6 +22,9 @@ namespace ClickOnceRecovery
 
 
             string xmlContent = File.ReadAllText(path);
+            xmlContent = xmlContent.Replace("&#x0;", "\\0");
+
+
             List<RegistrationElementDataClass>  dataObject = new List<RegistrationElementDataClass>();
             dataObject = (List<RegistrationElementDataClass>)ObjectFromXMLString(dataObject.GetType(), xmlContent);
             
