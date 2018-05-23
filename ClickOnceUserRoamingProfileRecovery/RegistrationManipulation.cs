@@ -22,7 +22,7 @@ namespace ClickOnceRecovery
 
             
             RegistrationManipulation.export(Path.Combine(registrationDirectory, "CurrentVersions.reg"), @"HKEY_CURRENT_USER\Software\Classes\Software\Microsoft\Windows\CurrentVersion");
-            RegistrationManipulation.export(Path.Combine(registrationDirectory, "UnInstall.reg"), @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall\d12366065cf17eb6");
+            RegistrationManipulation.export(Path.Combine(registrationDirectory, "UnInstall.reg"), @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall\[ApplicationId]");
 
 
         }
