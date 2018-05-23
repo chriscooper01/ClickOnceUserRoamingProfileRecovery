@@ -39,8 +39,9 @@ namespace ClickOnceRecovery
 
         public void RunProcess()
         {
-
-            RegistrationRead.GetKeysValues();
+            if (!Directory.Exists(AppData.ClickOnceLocation))
+                return;
+     
             
             DirectoryInfo info = new DirectoryInfo(AppData.ClickOnceLocation);
 
@@ -48,6 +49,11 @@ namespace ClickOnceRecovery
             Status(ProcessElementENUM.Element, "Application binaries", -1);
             List<DirectoryInfo> folders = info.GetDirectories().ToList();
             Status(ProcessElementENUM.Folder, "", folders.Count()+1);
+            
+            removeCurrentBackup();
+
+            RegistrationManipulation.ExportRegistration(AppData.RecoveryLocation);
+            
             foreach (var folder in folders)
             {
                 Status(ProcessElementENUM.Folder, folder.Name, -1);
@@ -66,7 +72,22 @@ namespace ClickOnceRecovery
 
             CallBack();
         }
+        private void removeCurrentBackup()
+        {
+            if (Directory.Exists(AppData.RecoveryLocation))
+            {
+                DirectoryInfo info = new DirectoryInfo(AppData.RecoveryLocation);
+                Directory.Delete(info.Parent.FullName, true);
 
+                
+            }//END if(Directory.Exists(AppData.RecoveryLocation))
+
+    
+            Directory.CreateDirectory(AppData.RecoveryLocation);
+
+
+        }
+        
         private void getManifestFiles(DirectoryInfo infor)
         {
             List<DirectoryInfo> folders = infor.GetDirectories().ToList();
