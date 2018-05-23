@@ -9,6 +9,8 @@ namespace ClickOnceRecovery
 {
     public class RegistrationRead
     {
+         private const string MAINREGISTRATIONLOCATIONPRESENT = @"Software\Classes\Software\Microsoft\Windows\CurrentVersion\Deployment\SideBySide\2.0\Marks";//\2.0";
+        private const string MARKELEMENTREQUIRED = "[Application Registration Name]";
         //Computer\HKEY_CURRENT_USER\
         private const string MAINREGISTRATIONLOCATION = @"Software\Classes\Software\Microsoft\Windows\CurrentVersion\Deployment\SideBySide";
         private static List<string> requiredRegistrationElements = new List<string>()
@@ -25,7 +27,21 @@ namespace ClickOnceRecovery
         //    @"Families",
         //    @"Visibility"
         
-            
+       public static bool IsKeysPResent()
+        {
+            using (Microsoft.Win32.RegistryKey registrationElement = Registry.CurrentUser.OpenSubKey(MAINREGISTRATIONLOCATIONPRESENT))
+            {
+                if (registrationElement == null)
+                    return false;
+
+                if (registrationElement.SubKeyCount > 0)
+                {
+                    
+                    return ( registrationElement.GetSubKeyNames().FirstOrDefault(x => x.StartsWith(MARKELEMENTREQUIRED)) != null);
+                }
+                return false;
+            }
+        }    
 
         public static void GetKeysValues()
         {
